@@ -16,6 +16,9 @@
     "CLI"
   ],
   "main": "dist/index.js",
+  "bin": {
+    "tfold": "./dist/index.js"
+  },
   "scripts": {
     "test": "jest --passWithNoTests",
     "prepare": "husky",
