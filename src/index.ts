@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 /* eslint-disable no-console */
 import fs from "node:fs";
 import path from "node:path";
@@ -6,53 +8,45 @@ import util, { parseArgs, styleText } from "node:util";
 
 const readdirPromise = util.promisify(fs.readdir);
 
+/** make spaces *visible* in template strings */
 const space = " ";
 
-interface Symbols {
-  closed: string;
-  open: string;
-  file: string;
+enum Style {
+  none = "none",
+  wireframe = "wireframe",
+  black = "black",
+  colored = "colored",
 }
 
-enum SymbolStyle {
-  none,
-  wireframe,
-  black,
-  colored,
-}
-
-type SymbolStyles = {
-  [key in keyof typeof SymbolStyle]: Symbols;
-};
-
-const symbolStyles: SymbolStyles = {
+/** The different symbol sets, depending on the choosen style */
+const symbolStyles = {
   none: { closed: "", open: "", file: "" },
   wireframe: { closed: "🗀", open: "🗁", file: "🗋" },
   black: { closed: "🖿", open: "🖿", file: "🗎" },
   colored: { closed: "📁", open: "📂", file: "📄" },
 };
 
+/** Options configuration for `util.parseArgs(...)` */
 const parseArgsOptionsConfig: util.ParseArgsOptionsConfig = {
-  "style": { type: "string", default: "none", short: "s" },
-  "folder-first": { type: "boolean", default: true, short: "f" },
-  "verbose": { type: "boolean", default: false },
+  style: { type: "string", default: "none", short: "s" },
+  verbose: { type: "boolean", default: false },
+  unsorted: { type: "boolean", default: false, short: "u" },
 };
 
-interface Config {
-  symbols: Symbols;
-  root: string;
-  ignores: string[];
-  folderFirst: boolean;
-  verbose: boolean;
-}
-
-const config: Config = {
+/** Default configuration of the *treefolder* tool */
+const config = {
+  style: Style.none,
   symbols: symbolStyles.none,
   root: ".",
-  ignores: ["node_modules", "dist", "build", ".git", ".husky\\_", "logs"],
-  folderFirst: false,
+  ignores: ["node_modules", "dist", "build", ".git", ".husky\\_", "logs", ".angular", "coverage"],
   verbose: false,
+  unsorted: false,
 };
+
+let folderCount = 0;
+let fileCount = 0;
+let ignoredCount = 0;
+let cliArgs = {};
 
 /**
  * Sorting function based on the comparison of the types and names of `fs.Dirent` folder content items.
@@ -76,7 +70,9 @@ function compareFolderContentItems(item1: fs.Dirent<string>, item2: fs.Dirent<st
  * @returns `true` if the item should be ignored/hidden, otherwise `false`
  */
 function isIgnored(folder: string, itemName: string): boolean {
-  return config.ignores.includes(path.join(folder, itemName));
+  const result = config.ignores.includes(path.join(folder, itemName));
+  result && ignoredCount++;
+  return result;
 }
 
 /**
@@ -90,14 +86,7 @@ function isIgnored(folder: string, itemName: string): boolean {
  */
 async function getFolderContent(folder: string): Promise<fs.Dirent<string>[]> {
   const result = (await readdirPromise(folder, { withFileTypes: true })).filter(item => !isIgnored(folder, item.name));
-
-  // if (config.folderFirst) {
-  //   console.log("FOLDERFIRST", config.folderFirst, "SORTED");
-  //   return result.sort(compareFolderContentItems);
-  // }
-  // console.log("FOLDERFIRST", config.folderFirst, "UNSORTED");
-  // return result;
-  return config.folderFirst ? result.sort(compareFolderContentItems) : result;
+  return !config.unsorted ? result.sort(compareFolderContentItems) : result;
 }
 
 /**
@@ -123,59 +112,60 @@ async function buildTree(folder: any, indent: string, isHead: boolean, isTail: b
       result += await buildTree(path.join(folder, contentItem.name), indent + contentItemPrefix, false, index === tailIndex);
     };
     if (contentItem.isFile()) {
+      fileCount++;
       const entityPrefix = index === tailIndex ? `└─${config.symbols.file}${space}` : `├─${config.symbols.file}${space}`;
       result += `${indent + contentItemPrefix + entityPrefix + contentItem.name}\n`;
     }
   };
+  folderCount++;
   return result;
 }
+
 /**
  * Parse the command line arguments and set the tool configuration accordingly
  */
 async function configure(): Promise<void> {
   let parsed;
   try {
-    parsed = parseArgs({ options: parseArgsOptionsConfig, allowPositionals: true, strict: false });
+    parsed = parseArgs({ options: parseArgsOptionsConfig, allowPositionals: true, strict: true });
   }
-  catch (error) {
-    if (error instanceof TypeError) {
-      console.error(`${error.name}: ${error.message}`);
-    }
+  catch (err) {
+    const error = err as Error;
+    console.error(`[${styleText("red", error.name)}]: ${error.message}`);
     exit(1);
   }
   const { values, positionals } = parsed;
-
-  // ----- symbols -----
-  config.symbols = symbolStyles[values.style! as unknown as SymbolStyle] ?? config.symbols;
-  if (!config.symbols) {
-    console.error(`Unsupported value of the 'style' option:\n  current value  : '${values.style}'\n  allowed values : 'none', 'wireframe', 'black' or 'colored'\n  default value  : 'none'`);
-    exit(1);
-  }
-
-  // ----- root folder -----
-  config.root = path.resolve(positionals.length === 1 && positionals[0] ? positionals[0] : config.root);
-
-  // ----- resolved ignores -----
+  // ----- configuration: style and symbols -----
+  config.style = Style[values.style as keyof typeof Style] ?? config.style;
+  config.symbols = symbolStyles[config.style];
+  // ----- configuration: root folder -----
+  config.root = path.resolve((positionals.length > 0) ? positionals[0]! : config.root);
+  // ----- configuration: resolved ignores -----
   config.ignores = config.ignores.map(item => path.join(config.root, item));
+  // ----- configuration: sort folders first -----
+  config.unsorted = Boolean(values.unsorted);
+  // ----- configuration: verbose output -----
+  config.verbose = Boolean(values.verbose);
 
-  // ----- sort folders first -----
-  config.folderFirst = values["folder-first"] === true;
-
-  // ----- Verbose -----
-  config.verbose = values.verbose === true;
-
-  if (config.verbose) {
-    console.debug("\nCommand Line arguments:", { ...values, folder: positionals[0] ?? "unknown" });
-    console.debug("\nUsed configuration: ", { root: config.root, symbols: config.symbols, folderFirst: config.folderFirst, verbose: config.verbose }, "\n");
-  }
+  cliArgs = { ...values, root: positionals[0] ?? "n/a" };
 }
 
+/** Main function of the tool */
 async function main() {
   await configure();
-  const tree = await buildTree(config.root, "", true, true);
-  console.info(tree);
+  console.info(await buildTree(config.root, "", true, true));
   if (config.verbose) {
-    console.debug(`${styleText("green", "Success!")}\n`);
+    const verboseTextColor = "blueBright";
+    const verboseNumberColor = "yellow";
+    console.info(styleText(verboseTextColor, "\nCommand line arguments:"));
+    console.info(cliArgs);
+    console.info(styleText(verboseTextColor, "\nTreefold configuration:"));
+    console.info(config, "\n");
+    const folders = styleText(verboseNumberColor, `${folderCount}`);
+    const files = styleText(verboseNumberColor, `${fileCount}`);
+    const ignored = styleText(verboseNumberColor, `${ignoredCount}`);
+    console.info(`${styleText(verboseTextColor, `Scanned ${folders} folders and ${files} files.`)}`);
+    console.info(`${styleText(verboseTextColor, `Filtered out ${ignored} items (folders or files).`)}`);
   }
 }
 
