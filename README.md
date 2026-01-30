@@ -4,7 +4,7 @@ A **node.js CLI utility** generating a **tree representation** (treeview) of a *
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/khatastroffik/treefolder?style=flat&labelColor=darkblue&color=black) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/khatastroffik/treefolder?style=flat&labelColor=darkblue&color=black) ![GitHub License](https://img.shields.io/github/license/khatastroffik/treefolder?labelColor=darkblue&color=black&style=flat) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/typescript?style=flat&labelColor=darkgreen&color=black) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/eslint?style=flat&labelColor=darkgreen&color=black) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/jest?style=flat&labelColor=darkgreen&color=black)
 
-![tfold](docs/tfold.png)
+![tfold](docs/tfold.jpg)
 
 ## Features
 
