@@ -1,5 +1,7 @@
-src/* linguist-detectable
+*.ts linguist-language=TypeScript
+*.mts linguist-language=TypeScript
 *.js linguist-vendored
+*.mjs linguist-vendored
 *.yaml linguist-vendored
 *.md linguist-documentation
 docs/* linguist-documentation
