@@ -1,1 +1,5 @@
-*.js *.yaml linguist-detectable=false
+src/* linguist-detectable
+*.js linguist-vendored
+*.yaml linguist-vendored
+*.md linguist-documentation
+docs/* linguist-documentation
