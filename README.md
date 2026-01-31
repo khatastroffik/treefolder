@@ -35,11 +35,16 @@ When the flag i.e. command line argument `--verbose` is defined/set, then a few 
 
 ### Styled output
 
-The treeview i.e. tree representation can be generated and displayed using 4 different styles: `none` (default), `black`, `wireframe` or `colored`. See the [output samples](#styled-output-examples) below.
-
+The treeview i.e. tree representation can be generated and displayed using 4 different styles: **`none`** (default), **`black`**, **`wireframe`** or **`colored`**.
 The style can be defined using the command line argument `--style`or `-s` like so: `--style <name of the style>`.
 
+&rarr; Examples of styled output can be found in the additional documentation: [Styled output examples](docs/readme.md#styled-output-examples)
+
 Note: some environments i.e. shells may not display the symbols (which are representedusing specific unicode code points like `U+1F5BF` or `U+1F5C1`) properly. Try to change the _font_ used in the shell in order to display the correct unicode symbols.
+
+### Version information output
+
+Use the command line argument `--version` or `-v` to display the version information about the tool.
 
 ## Installation
 
@@ -98,15 +103,12 @@ See [Installation](#installation) above
 ### &rarr; **Run the typescript code directly** (development)
 
 ```ini
-pnpm tsx .
-# or
 pnpm tsx src\index.ts
 # or
-pnpm tsx . ..\..\some-folder
+pnpm tsx src\index.ts ..\..\some-folder
 # or
-pnpm tsx . --style=colored --unsorted --verbose c:\test\some-other-folder
-# or
-...
+pnpm tsx src\index.ts --style=colored --unsorted --verbose c:\test\some-other-folder
+# ...
 ```
 
 or
@@ -137,117 +139,21 @@ or
 pnpm dev
 ```
 
-## Styled output examples
+---
 
-### "none" Style &rarr; `--style=none`
+<style>pre {line-height:1.0em !important;}</style>
 
-This is the **default** style and may be ommited
-
-```shell
-treefold
-├─ .husky
-│  └─ pre-commit
-├─ .vscode
-│  └─ settings.json
-├─ docs
-│  └─ readme.md
-├─ src
-│  ├─ testfolder
-│  └─ index.ts
-├─ .gitignore
-├─ eslint.config.mjs
-├─ jest.config.js
-├─ package.json
-├─ pnpm-lock.yaml
-├─ pnpm-workspace.yaml
-├─ README.md
-└─ tsconfig.json
+```text
+┌─────────────────────────────────────────────┐
+|                                             |
+   ╭━┳━╭━╭━╮╮
+   ┃┈┈┈┣▄╋▄┫
+   ┃┈┃┈╰━╰━━━━━━╮            "K11K"
+   ╰┳╯┈┈┈┈┈┈┈┈ ◢█◣    a very pragmatic dog
+    ┃┈┈┈┈┈┈┈┈┈┈████
+    ┃┈┈┈┈┈┈┈┈┈┈◥█◤
+    ┃┈┈┈┈╭━┳━━━━╯
+    ┣━━━━━━┫
+|                                             |
+└──────────── made by khatastroffik ──────────┘
 ```
-
-### "colored" Style &rarr; `--style=colored`
-
-```shell
-📂 treefold
-├─📂 .husky
-│  └─📄 pre-commit
-├─📂 .vscode
-│  └─📄 settings.json
-├─📂 docs
-│  └─📄 readme.md
-├─📂 src
-│  ├─📁 testfolder
-│  └─📄 index.ts
-├─📄 .gitignore
-├─📄 eslint.config.mjs
-├─📄 jest.config.js
-├─📄 package.json
-├─📄 pnpm-lock.yaml
-├─📄 pnpm-workspace.yaml
-├─📄 README.md
-└─📄 tsconfig.json
-```
-
-### "black" Style &rarr; `--style=black`
-
-```shell
-🖿 treefold
-├─🖿 .husky
-│  └─🗎 pre-commit
-├─🖿 .vscode
-│  └─🗎 settings.json
-├─🖿 docs
-│  └─🗎 readme.md
-├─🖿 src
-│  ├─🖿 testfolder
-│  └─🗎 index.ts
-├─🗎 .gitignore
-├─🗎 eslint.config.mjs
-├─🗎 jest.config.js
-├─🗎 package.json
-├─🗎 pnpm-lock.yaml
-├─🗎 pnpm-workspace.yaml
-├─🗎 README.md
-└─🗎 tsconfig.json
-```
-
-### "wireframe" Style &rarr; `--style=wireframe`
-
-```shell
-🗁 treefold
-├─🗁 .husky
-│  └─🗋 pre-commit
-├─🗁 .vscode
-│  └─🗋 settings.json
-├─🗁 docs
-│  └─🗋 readme.md
-├─🗁 src
-│  ├─🗀 testfolder
-│  └─🗋 index.ts
-├─🗋 .gitignore
-├─🗋 eslint.config.mjs
-├─🗋 jest.config.js
-├─🗋 package.json
-├─🗋 pnpm-lock.yaml
-├─🗋 pnpm-workspace.yaml
-├─🗋 README.md
-└─🗋 tsconfig.json
-```
-
-<!--
-
-## Sources &amp; stories
-
-### From trees and leaves
-
-- <https://willcarh.art/blog/how-to-print-file-trees-on-the-command-line>
-- <https://stackoverflow.com/questions/41472161/fs-readdir-ignore-directories>
-- <https://www.geeksforgeeks.org/node-js/node-js-fs-readdirsync-method/>
-- <https://www.npmjs.com/package/recursive-readdir>
-
-### From Glob patterns and .gitignore
-
-- <https://github.com/isaacs/node-glob>
-- <https://github.com/micromatch/picomatch>
-- <https://github.com/sindresorhus/globby>
-
--->

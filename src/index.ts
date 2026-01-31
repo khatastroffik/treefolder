@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { exit } from "node:process";
 import util, { parseArgs, styleText } from "node:util";
+import { version as packageVersion } from "../package.json";
 
 const readdirPromise = util.promisify(fs.readdir);
 
@@ -31,6 +32,7 @@ const parseArgsOptionsConfig: util.ParseArgsOptionsConfig = {
   style: { type: "string", default: "none", short: "s" },
   verbose: { type: "boolean", default: false },
   unsorted: { type: "boolean", default: false, short: "u" },
+  version: { type: "boolean", default: false, short: "v" },
 };
 
 /** Default configuration of the *treefolder* tool */
@@ -135,6 +137,11 @@ async function configure(): Promise<void> {
     exit(1);
   }
   const { values, positionals } = parsed;
+  // ----- configuration: version -----
+  if (values.version) {
+    await version();
+    exit(0);
+  }
   // ----- configuration: style and symbols -----
   config.style = Style[values.style as keyof typeof Style] ?? config.style;
   config.symbols = symbolStyles[config.style];
@@ -150,22 +157,43 @@ async function configure(): Promise<void> {
   cliArgs = { ...values, root: positionals[0] ?? "n/a" };
 }
 
+function t(text: string | number) {
+  return styleText((typeof text === "number") ? "yellow" : "blue", `${text}`);
+}
+
+async function version() {
+  console.info(t(`
+             Treefold  aka  "tfold"
+                 Version ${packageVersion}
+                 
+     https://npmjs.com/khatastroffik/treefold
+
+  ┌─────────────────────────────────────────────┐
+  |                                             |
+     ╭━┳━╭━╭━╮╮
+     ┃┈┈┈┣▄╋▄┫
+     ┃┈┃┈╰━╰━━━━━━╮            "K11K"
+     ╰┳╯┈┈┈┈┈┈┈┈ ◢█◣    a very pragmatic dog
+      ┃┈┈┈┈┈┈┈┈┈┈████
+      ┃┈┈┈┈┈┈┈┈┈┈◥█◤
+      ┃┈┈┈┈╭━┳━━━━╯
+      ┣━━━━━━┫
+  |                                             |
+  └──────────── made by khatastroffik ──────────┘
+  `));
+}
+
 /** Main function of the tool */
 async function main() {
   await configure();
   console.info(await buildTree(config.root, "", true, true));
   if (config.verbose) {
-    const verboseTextColor = "blueBright";
-    const verboseNumberColor = "yellow";
-    console.info(styleText(verboseTextColor, "\nCommand line arguments:"));
+    console.info(t("\nCommand line arguments:"));
     console.info(cliArgs);
-    console.info(styleText(verboseTextColor, "\nTreefold configuration:"));
+    console.info(t("\nTreefold configuration:"));
     console.info(config, "\n");
-    const folders = styleText(verboseNumberColor, `${folderCount}`);
-    const files = styleText(verboseNumberColor, `${fileCount}`);
-    const ignored = styleText(verboseNumberColor, `${ignoredCount}`);
-    console.info(`${styleText(verboseTextColor, `Scanned ${folders} folders and ${files} files.`)}`);
-    console.info(`${styleText(verboseTextColor, `Filtered out ${ignored} items (folders or files).`)}`);
+    console.info(t(`Scanned ${t(folderCount)} folders and ${t(fileCount)} files.`));
+    console.info(t(`Filtered out ${t(ignoredCount)} items (folders or files).`));
   }
 }
 
