@@ -163,10 +163,10 @@ function t(text: string | number) {
 
 async function version() {
   console.info(t(`
-             Treefold  aka  "tfold"
+            Treefolder  aka  "tfold"
                  Version ${packageVersion}
                  
-     https://npmjs.com/khatastroffik/treefold
+    https://npmjs.com/khatastroffik/treefolder
 
   ┌─────────────────────────────────────────────┐
   |                                             |
@@ -190,7 +190,7 @@ async function main() {
   if (config.verbose) {
     console.info(t("\nCommand line arguments:"));
     console.info(cliArgs);
-    console.info(t("\nTreefold configuration:"));
+    console.info(t("\nTreefolder configuration:"));
     console.info(config, "\n");
     console.info(t(`Scanned ${t(folderCount)} folders and ${t(fileCount)} files.`));
     console.info(t(`Filtered out ${t(ignoredCount)} items (folders or files).`));

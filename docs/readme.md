@@ -7,7 +7,7 @@
 This is the **default** style and may be ommited
 
 ```shell
-treefold
+treefolder
 ├─ .husky
 │  └─ pre-commit
 ├─ .vscode
@@ -30,7 +30,7 @@ treefold
 ### "colored" Style &rarr; `--style=colored`
 
 ```shell
-📂 treefold
+📂 treefolder
 ├─📂 .husky
 │  └─📄 pre-commit
 ├─📂 .vscode
@@ -53,7 +53,7 @@ treefold
 ### "black" Style &rarr; `--style=black`
 
 ```shell
-🖿 treefold
+🖿 treefolder
 ├─🖿 .husky
 │  └─🗎 pre-commit
 ├─🖿 .vscode
@@ -76,7 +76,7 @@ treefold
 ### "wireframe" Style &rarr; `--style=wireframe`
 
 ```shell
-🗁 treefold
+🗁 treefolder
 ├─🗁 .husky
 │  └─🗋 pre-commit
 ├─🗁 .vscode

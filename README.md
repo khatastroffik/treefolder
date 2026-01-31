@@ -63,7 +63,7 @@ Note: this CLI tool requires `node.js` or a compatible JavaScript running enviro
 1. Navigate to the repo folder:
 
    ```ini
-   cd treefold
+   cd treefolder
    ```
 
 1. Install the (dev-) dependencies using your favorite package manager and transpile the TypeScript source code into a JavaScript module.
