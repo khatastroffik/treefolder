@@ -1,5 +1,5 @@
 {
-  "name": "treefolder",
+  "name": "@khatastroffik/treefolder",
   "version": "1.0.0",
   "packageManager": "pnpm@10.28.2",
   "devEngines": {
@@ -11,6 +11,13 @@
   "description": "A node.js CLI utility generating a tree representation (treeview) of a folder structure including its contained files and subfolders.",
   "author": "khatastroffik",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/khatastroffik/treefolder.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/khatastroffik/treefolder/issues"
+  },
   "keywords": [
     "treefolder",
     "tfold",
@@ -29,6 +36,15 @@
     "tfold": "./dist/index.js",
     "treefolder": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "docs/readme.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+
   "scripts": {
     "test": "jest --passWithNoTests",
     "prepare": "husky",
@@ -38,10 +54,15 @@
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "pnpm clean && tsc",
+    "build2prod": "pnpm build && terser dist/index.js -o dist/index.js -c -m",
     "start": "node .",
-    "postpublish": "git push --tags",
+    "pushtags": "git push --follow-tags origin main",
     "try-commit": "git hook run pre-commit",
-    "tsx": "tsx"
+    "tsx": "tsx",
+    "release": "pnpm dlx commit-and-tag-version",
+    "release:test": "pnpm dlx commit-and-tag-version --dry-run",
+    "pub": "pnpm pushtags && pnpm publish",
+    "pub:test": "pnpm publish --dry-run --force --no-git-checks"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.3",
@@ -58,6 +79,7 @@
     "jest": "^30.2.0",
     "lint-staged": "^16.2.7",
     "rimraf": "^6.1.2",
+    "terser": "^5.46.0",
     "ts-jest": "^29.4.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

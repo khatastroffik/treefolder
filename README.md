@@ -4,9 +4,43 @@ A **node.js CLI utility** generating a **tree representation** (treeview) of a *
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/khatastroffik/treefolder?style=flat&labelColor=darkblue&color=black) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/khatastroffik/treefolder?style=flat&labelColor=darkblue&color=black) ![GitHub License](https://img.shields.io/github/license/khatastroffik/treefolder?labelColor=darkblue&color=black&style=flat) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/typescript?style=flat&labelColor=darkgreen&color=black) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/eslint?style=flat&labelColor=darkgreen&color=black) ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/khatastroffik/treefolder/dev/jest?style=flat&labelColor=darkgreen&color=black)
 
-![tfold](docs/tfold.jpg)
+![tfold](https://raw.githubusercontent.com/khatastroffik/treefolder/41846124e0e66c899d1ca0e5acf826eb727e4f68/docs/tfold.jpg)
+
+## Installation
+
+### prerequisite
+
+This CLI tool requires `node.js` or a compatible JavaScript runtime environment to execute successfully. `npm`, `pnpm` or `yarn` may be required as well, in case you'd like to install the tool manually and/or to modify the source code.
+
+### Install and use "treefolder" as a globally available CLI tool
+
+This is the recommanded and easiest approach.
+
+1. Install using `pnpm` (see below), `yarn` or `npm`:
+
+   ```ini
+   pnpm add --global @khatastroffik/treefolder
+   ```
+
+1. start using the CLI tool from any directory:
+
+   ```ini
+   # show treeview of the current directory
+   tfold
+   # or show treeview of any directory
+   tfold <some-path-to-be-used-as-tree-root>
+   ```
+
+   Note: you may configure the tool using some **options** as needed. See the [Features](#features) list.
 
 ## Features
+
+1. [Auto "root folder"](#auto-root-folder)
+1. [Auto "ignore paths"](#auto-ignore-paths)
+1. [Sort leaves "folders first"](#sort-leaves-folders-first)
+1. [Styled output](#styled-output)
+1. [Version information](#version-information)
+1. [Verbose output](#verbose-output)
 
 ### Auto "root folder"
 
@@ -29,10 +63,6 @@ By default, the list i.e. the leaves of the treeview are sorted following the _"
 
 This behavior can be _disabled_ using the command line argument `--unsorted`. In this case, all items are sorted the way the operating system does e.g. sorted by their names, regardless of their type (directory or file).
 
-#### Verbose output
-
-When the flag i.e. command line argument `--verbose` is defined/set, then a few more information will be displayed together with the tree representation.
-
 ### Styled output
 
 The treeview i.e. tree representation can be generated and displayed using 4 different styles: **`none`** (default), **`black`**, **`wireframe`** or **`colored`**.
@@ -40,15 +70,17 @@ The style can be defined using the command line argument `--style`or `-s` like s
 
 &rarr; Examples of styled output can be found in the additional documentation: [Styled output examples](docs/readme.md#styled-output-examples)
 
-Note: some environments i.e. shells may not display the symbols (which are representedusing specific unicode code points like `U+1F5BF` or `U+1F5C1`) properly. Try to change the _font_ used in the shell in order to display the correct unicode symbols.
+Note: some environments i.e. shells may not display the symbols (which are represented using specific unicode code points like `U+1F5BF` or `U+1F5C1`) properly. Try to change the _font_ used in the shell in order to display the correct unicode symbols.
 
-### Version information output
+### Version information
 
 Use the command line argument `--version` or `-v` to display the version information about the tool.
 
-## Installation
+### Verbose output
 
-Note: this CLI tool requires `node.js` or a compatible JavaScript running environment to execute successfully. `npm`, `pnpm` or `yarn` may be required as well, in case you'd like to install the tool manually or to modify the source code.
+When the flag i.e. command line argument `--verbose` is defined/set, then a few more information will be displayed together with the tree representation.
+
+## Development
 
 ### Manually install as a globally available CLI tool `tfold`
 
@@ -57,7 +89,7 @@ Note: this CLI tool requires `node.js` or a compatible JavaScript running enviro
    ```ini
      gh repo clone khatastroffik/treefolder
      # or
-     git clone khatastroffik/treefolder
+     git clone https://github.com/khatastroffik/treefolder.git
    ```
 
 1. Navigate to the repo folder:
@@ -79,9 +111,12 @@ Note: this CLI tool requires `node.js` or a compatible JavaScript running enviro
 
    ```ini
    npm install -g
+   # or (YES, TWICE IN A ROW!)
+   pnpm link --global
+   pnpm link --global
    ```
 
-   Note: _pnpm link_ seems to be broken, since it doesn't register the bin scripts after they have been properly linked.
+   Note: _pnpm link_ lacks of refinements (!) as of v10.x, but this seems to work well, despite the warnings...
 
 1. Use the CLI tool alias `tfold`. E.g.:
 
@@ -94,26 +129,23 @@ Note: this CLI tool requires `node.js` or a compatible JavaScript running enviro
    tfold c:\\DEV\\another-folder --unsorted --style wireframe
    ```
 
-## Usage
+### Running the source code
 
-### &rarr; **Run the tool directly (after installation)**
+Within the local clone/copy of the treefolder repository, you may:
 
-See [Installation](#installation) above
-
-### &rarr; **Run the typescript code directly** (development)
+#### &rarr; Run the **typescript** code directly (development)
 
 ```ini
 pnpm tsx src\index.ts
 # or
-pnpm tsx src\index.ts ..\..\some-folder
-# or
-pnpm tsx src\index.ts --style=colored --unsorted --verbose c:\test\some-other-folder
-# ...
+pnpm tsx src\index.ts [root-path] [options]
+# or run and watch for code changes
+pnpm dev
 ```
 
 or
 
-### &rarr; **Build and run the javascript code** (development)
+#### &rarr; Build and run the **javascript** code (development)
 
 ```ini
 # at least once
@@ -131,17 +163,7 @@ node dist\index.js --style=colored --unsorted --verbose c:\test\some-other-folde
 
 ```
 
-or
-
-### &rarr; **Run and watch for code changes** (development)
-
-```ini
-pnpm dev
-```
-
 ---
-
-<style>pre {line-height:1.0em !important;}</style>
 
 ```text
 ┌─────────────────────────────────────────────┐

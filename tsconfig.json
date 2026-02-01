@@ -1,5 +1,4 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     "target": "esnext",
     "lib": ["esnext"],
@@ -15,15 +14,15 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "outDir": "./dist",
-    "sourceMap": true,
+    "removeComments": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "skipLibCheck": true
   },
-  // "include": ["./src/index.ts"]
   "files": ["src/index.ts"]
 }

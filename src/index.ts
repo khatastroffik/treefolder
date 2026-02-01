@@ -158,7 +158,7 @@ async function configure(): Promise<void> {
 }
 
 function t(text: string | number) {
-  return styleText((typeof text === "number") ? "yellow" : "blue", `${text}`);
+  return styleText((typeof text === "number") ? "yellow" : "blueBright", `${text}`);
 }
 
 async function version() {
@@ -166,7 +166,7 @@ async function version() {
             Treefolder  aka  "tfold"
                  Version ${packageVersion}
                  
-    https://npmjs.com/khatastroffik/treefolder
+    https://npmjs.com/@khatastroffik/treefolder
 
   ┌─────────────────────────────────────────────┐
   |                                             |

@@ -110,3 +110,7 @@ treefolder
 - <https://github.com/isaacs/node-glob>
 - <https://github.com/micromatch/picomatch>
 - <https://github.com/sindresorhus/globby>
+
+### Other topics
+
+- https://github.com/absolute-version/commit-and-tag-version
