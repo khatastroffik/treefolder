@@ -9,6 +9,6 @@ All notable changes to this project will be documented in this file. See [commit
 
 * add "update available" notice in version information ([ee1941e](https://github.com/khatastroffik/treefolder/commit/ee1941e0b93aa34c34e8caf2fe81c5c7e3961877))
 
-#### 1.0.0 (2026-02-01)
+## [1.0.0](https://github.com/khatastroffik/treefolder/compare/128dce1540a033586c3ef3d959ad4f1a9ca84474...v1.0.0) (2026-02-01)
 
 Initial release
