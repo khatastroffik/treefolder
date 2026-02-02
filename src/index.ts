@@ -51,6 +51,27 @@ let ignoredCount = 0;
 let cliArgs = {};
 
 /**
+ * Utility function to color a text for console output
+ * @param text if text is a string, then use the color blueBright else the color yellow
+ * @returns a colored text
+ */
+function colorText(text: string | number) {
+  return styleText((typeof text === "number") ? "yellow" : "blueBright", `${text}`);
+}
+
+/**
+ * Retrieve the version label of the latest package version on npmjs.com
+ * @returns the string corresponding to the latest version
+ */
+async function getLatestVersion(): Promise<string> {
+  const response = await fetch("https://registry.npmjs.org/@khatastroffik/treefolder");
+  await new Promise(resolve => setTimeout(resolve, 100)); // DUE TO A BUG IN NODE.JS
+  const data: any = await response.json();
+  const latest = data["dist-tags"].latest as string;
+  return latest;
+}
+
+/**
  * Sorting function based on the comparison of the types and names of `fs.Dirent` folder content items.
  *
  * Note: directory items always preceeed file items. The names of the items (of the same type) are compared otherwise.
@@ -134,13 +155,13 @@ async function configure(): Promise<void> {
   catch (err) {
     const error = err as Error;
     console.error(`[${styleText("red", error.name)}]: ${error.message}`);
-    exit(1);
+    return exit(1);
   }
   const { values, positionals } = parsed;
   // ----- configuration: version -----
   if (values.version) {
     await version();
-    exit(0);
+    return exit(0);
   }
   // ----- configuration: style and symbols -----
   config.style = Style[values.style as keyof typeof Style] ?? config.style;
@@ -153,48 +174,70 @@ async function configure(): Promise<void> {
   config.unsorted = Boolean(values.unsorted);
   // ----- configuration: verbose output -----
   config.verbose = Boolean(values.verbose);
-
+  // ----- information on client arguments -----
   cliArgs = { ...values, root: positionals[0] ?? "n/a" };
 }
 
-function t(text: string | number) {
-  return styleText((typeof text === "number") ? "yellow" : "blueBright", `${text}`);
+/**
+ * Output the version information of the package/tool
+ */
+async function version(): Promise<void> {
+  const k11k = `
+    ┌─────────────────────────────────────────────┐
+    |                                             |
+       ╭━┳━╭━╭━╮╮
+       ┃┈┈┈┣▄╋▄┫
+       ┃┈┃┈╰━╰━━━━━━╮            "K11K"
+       ╰┳╯┈┈┈┈┈┈┈┈ ◢█◣    a very pragmatic dog
+        ┃┈┈┈┈┈┈┈┈┈┈████
+        ┃┈┈┈┈┈┈┈┈┈┈◥█◤
+        ┃┈┈┈┈╭━┳━━━━╯
+        ┣━━━━━━┫
+    |                                             |
+    └──────────── made by khatastroffik ──────────┘
+  `;
+  let update;
+  const latestVersion = await getLatestVersion();
+  if (latestVersion && latestVersion !== packageVersion) {
+    update = styleText("yellow", `
+┌─────────────────────────────────────────────────────┐
+|        A new version of Treefolder is available:    |
+|          current: ${packageVersion}  ->  latest: ${latestVersion}          |
+|                                                     |
+|          Install the latest version with:           |
+|   "npm update -g @khatastroffik/treefolder@latest"  |
+└─────────────────────────────────────────────────────┘
+`);
+  }
+
+  console.info(colorText(`
+              Treefolder  aka  "tfold"
+                   Version ${packageVersion}
+               
+      https://npmjs.com/@khatastroffik/treefolder
+${update ?? k11k}`));
 }
 
-async function version() {
-  console.info(t(`
-            Treefolder  aka  "tfold"
-                 Version ${packageVersion}
-                 
-    https://npmjs.com/@khatastroffik/treefolder
-
-  ┌─────────────────────────────────────────────┐
-  |                                             |
-     ╭━┳━╭━╭━╮╮
-     ┃┈┈┈┣▄╋▄┫
-     ┃┈┃┈╰━╰━━━━━━╮            "K11K"
-     ╰┳╯┈┈┈┈┈┈┈┈ ◢█◣    a very pragmatic dog
-      ┃┈┈┈┈┈┈┈┈┈┈████
-      ┃┈┈┈┈┈┈┈┈┈┈◥█◤
-      ┃┈┈┈┈╭━┳━━━━╯
-      ┣━━━━━━┫
-  |                                             |
-  └──────────── made by khatastroffik ──────────┘
-  `));
+/**
+ * Output additional information on the current run
+ */
+async function verbose() {
+  if (config.verbose) {
+    console.info(colorText("\nCommand line arguments:"));
+    console.info(cliArgs);
+    console.info(colorText("\nTreefolder configuration:"));
+    console.info(config, "\n");
+    console.info(colorText(`Scanned ${colorText(folderCount)} folders and ${colorText(fileCount)} files.`));
+    console.info(colorText(`Filtered out ${colorText(ignoredCount)} items (folders or files).`));
+  }
 }
 
 /** Main function of the tool */
 async function main() {
   await configure();
-  console.info(await buildTree(config.root, "", true, true));
-  if (config.verbose) {
-    console.info(t("\nCommand line arguments:"));
-    console.info(cliArgs);
-    console.info(t("\nTreefolder configuration:"));
-    console.info(config, "\n");
-    console.info(t(`Scanned ${t(folderCount)} folders and ${t(fileCount)} files.`));
-    console.info(t(`Filtered out ${t(ignoredCount)} items (folders or files).`));
-  }
+  const tree = await buildTree(config.root, "", true, true);
+  console.info(tree);
+  await verbose();
 }
 
 main();

@@ -113,4 +113,4 @@ treefolder
 
 ### Other topics
 
-- https://github.com/absolute-version/commit-and-tag-version
+- <https://github.com/absolute-version/commit-and-tag-version>
