@@ -1,17 +1,14 @@
 {
   "name": "@khatastroffik/treefolder",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "packageManager": "pnpm@10.28.2",
   "devEngines": {
-    "packageManager": [
-      {
-        "name": "pnpm",
-        "version": "10.28.2"
-      },
-      {
-        "name": "npm"
-      }
-    ]
+    "packageManager": [{
+      "name": "pnpm",
+      "version": "10.28.2"
+    }, {
+      "name": "npm"
+    }]
   },
   "description": "A node.js CLI utility generating a tree representation (treeview) of a folder structure including its contained files and subfolders.",
   "author": "khatastroffik",
@@ -49,6 +46,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+
   "scripts": {
     "test": "jest --passWithNoTests",
     "prepare": "husky",
