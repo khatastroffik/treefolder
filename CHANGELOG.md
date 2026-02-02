@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.1.0](https://github.com/khatastroffik/treefolder/compare/v1.0.0...v1.1.0) (2026-02-02)
+
+
+### Features
+
+* add "update available" notice in version information ([ee1941e](https://github.com/khatastroffik/treefolder/commit/ee1941e0b93aa34c34e8caf2fe81c5c7e3961877))
+
 #### 1.0.0 (2026-02-01)
 
 Initial release
