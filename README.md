@@ -59,9 +59,15 @@ Notes:
 
 ### Sort leaves "folders first"
 
-By default, the list i.e. the leaves of the treeview are sorted following the _"folders first" principle_: All the folders are listed first, then all the files. All items are alphabetically sorted. This apply at any depth within the tree structure.
+By default, the list or the leaves of the treeview are sorted following the _"folders first" principle_: All the folders are listed first, then all the files. All items are alphabetically sorted. This apply at any depth within the tree structure.
 
-This behavior can be _disabled_ using the command line argument `--unsorted`. In this case, all items are sorted the way the operating system does e.g. sorted by their names, regardless of their type (directory or file).
+This behavior can be _disabled_ using the command line argument `--unsorted`. In this case, all items are sorted the way the operating system does by default e.g. sorted by their names, regardless of their type (directory or file).
+
+### List output
+
+When the command line argument `--list` (short: `-l`) is used, all the folders and files will be displayed as a flat list instead of as a treeview.
+
+Note: the command line arguments `--unsorted` and `--style colored` may also be applied to refine i.e. adapt the list output. See the [List output examples](docs/readme.md#list-output-examples)
 
 ### Styled output
 
@@ -70,7 +76,10 @@ The style can be defined using the command line argument `--style`or `-s` like s
 
 &rarr; Examples of styled output can be found in the additional documentation: [Styled output examples](docs/readme.md#styled-output-examples)
 
-Note: some environments i.e. shells may not display the symbols (which are represented using specific unicode code points like `U+1F5BF` or `U+1F5C1`) properly. Try to change the _font_ used in the shell in order to display the correct unicode symbols.
+Notes:
+
+- some shell environments may not display the symbols (which are represented using specific unicode code points like `U+1F5BF` or `U+1F5C1`) properly. Try to change the _font_ used in the shell or to change the code page used by your shell in the background to interpret the chars, in order to display the unicode symbols properly.
+- On some shell environments e.g. under Windows OS, the output may still be faulty due to the OS automatically pre-formating the output in an inadequate way. Try to use another shell environment then.
 
 ### Version information
 

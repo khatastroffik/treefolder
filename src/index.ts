@@ -22,9 +22,9 @@ enum Style {
 /** The different symbol sets, depending on the choosen style */
 const symbolStyles = {
   none: { closed: "", open: "", file: "" },
-  wireframe: { closed: "🗀", open: "🗁", file: "🗋" },
-  black: { closed: "🖿", open: "🖿", file: "🗎" },
-  colored: { closed: "📁", open: "📂", file: "📄" },
+  wireframe: { closed: "🗀  ", open: "🗁  ", file: "🗋" },
+  black: { closed: "🖿 ", open: "🖿 ", file: "🗎" },
+  colored: { closed: "📁 ", open: "📂 ", file: "📄" },
 };
 
 /** Options configuration for `util.parseArgs(...)` */
@@ -33,6 +33,7 @@ const parseArgsOptionsConfig: util.ParseArgsOptionsConfig = {
   verbose: { type: "boolean", default: false },
   unsorted: { type: "boolean", default: false, short: "u" },
   version: { type: "boolean", default: false, short: "v" },
+  list: { type: "boolean", default: false, short: "l" },
 };
 
 /** Default configuration of the *treefolder* tool */
@@ -43,12 +44,36 @@ const config = {
   ignores: ["node_modules", "dist", "build", ".git", ".husky\\_", "logs", ".angular", "coverage"],
   verbose: false,
   unsorted: false,
+  formatAsList: false,
 };
 
 let folderCount = 0;
 let fileCount = 0;
 let ignoredCount = 0;
 let cliArgs = {};
+
+function formatFolderLeaf(indent: string, folderPrefix: string, foldersymbol: string, folderName: string) {
+  return `${indent + folderPrefix + foldersymbol + path.basename(folderName)}\n`;
+}
+
+function formatFileLeaf(indent: string, contentItemPrefix: string, entityPrefix: string, contentItem: fs.Dirent) {
+  return `${indent + contentItemPrefix + entityPrefix + contentItem.name}\n`;
+}
+
+function formatFolderListItem(_indent: string, _folderPrefix: string, _foldersymbol: string, folderName: string) {
+  let outputName = folderName + path.sep;
+  if (config.style === Style.colored)
+    outputName = styleText("blueBright", outputName);
+  return `${outputName}\n`;
+}
+
+function formatFileListItem(_indent: string, _contentItemPrefix: string, _entityPrefix: string, contentItem: fs.Dirent) {
+  const outputName = path.join(contentItem.parentPath, contentItem.name);
+  return `${outputName}\n`;
+}
+
+let formatFolder = formatFolderLeaf;
+let formatFile = formatFileLeaf;
 
 /**
  * Utility function to color a text for console output
@@ -124,9 +149,8 @@ async function getFolderContent(folder: string): Promise<fs.Dirent<string>[]> {
 async function buildTree(folder: any, indent: string, isHead: boolean, isTail: boolean) {
   const folderContent = await getFolderContent(folder);
   const foldersymbol = folderContent.length < 1 ? config.symbols.closed : config.symbols.open;
-  const folderName = isHead && config.symbols.open ? `${foldersymbol}${space}${path.basename(folder)}` : path.basename(folder);
-  const folderPrefix = isHead ? "" : isTail ? `└─${foldersymbol}${space}` : `├─${foldersymbol}${space}`;
-  let result = `${`${indent + folderPrefix}${folderName}`}\n`;
+  const folderPrefix = isHead ? "" : ((isTail ? `└─` : `├─`) + (config.symbols.open ? "" : space));
+  let result = formatFolder(indent, folderPrefix, foldersymbol, folder);
   const contentItemPrefix = isHead ? "" : isTail ? `${space}${space}${space}` : `│${space}${space}`;
   const tailIndex = folderContent.length - 1;
   for (let index = 0; index < folderContent.length; index++) {
@@ -137,7 +161,7 @@ async function buildTree(folder: any, indent: string, isHead: boolean, isTail: b
     if (contentItem.isFile()) {
       fileCount++;
       const entityPrefix = index === tailIndex ? `└─${config.symbols.file}${space}` : `├─${config.symbols.file}${space}`;
-      result += `${indent + contentItemPrefix + entityPrefix + contentItem.name}\n`;
+      result += formatFile(indent, contentItemPrefix, entityPrefix, contentItem);
     }
   };
   folderCount++;
@@ -158,10 +182,17 @@ async function configure(): Promise<void> {
     return exit(1);
   }
   const { values, positionals } = parsed;
+
   // ----- configuration: version -----
   if (values.version) {
     await version();
     return exit(0);
+  }
+  // ----- configuration: list format -----
+  config.formatAsList = Boolean(values.list);
+  if (config.formatAsList) {
+    formatFolder = formatFolderListItem;
+    formatFile = formatFileListItem;
   }
   // ----- configuration: style and symbols -----
   config.style = Style[values.style as keyof typeof Style] ?? config.style;
