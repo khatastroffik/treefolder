@@ -38,6 +38,7 @@ This is the recommanded and easiest approach.
 1. [Auto "root folder"](#auto-root-folder)
 1. [Auto "ignore paths"](#auto-ignore-paths)
 1. [Sort leaves "folders first"](#sort-leaves-folders-first)
+1. [List output](#list-output)
 1. [Styled output](#styled-output)
 1. [Version information](#version-information)
 1. [Verbose output](#verbose-output)
