@@ -92,5 +92,12 @@
   },
   "lint-staged": {
     "*.ts": "pnpm lintix"
+  },
+  "commit-and-tag-version": {
+    "types": [
+      { "type": "refactor", "section": "Refactors", "hidden": false },
+      { "type": "docs", "section": "Documentation", "hidden": false },
+      { "type": "build", "section": "Build System / Dependencies", "hidden": false }
+    ]
   }
 }
