@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.0](https://github.com/khatastroffik/treefolder/compare/v1.2.1...v1.3.0) (2026-02-04)
+
+
+### Features
+
+* add "-d, --debug" flag to display configuration internals, trim verbose output ([cdda579](https://github.com/khatastroffik/treefolder/commit/cdda579aa4b28072cca70fbbd2b7953a8fb41f60))
+
+
+### Documentation
+
+* adjust/complete config of CHANGELOG generator ([9166c9c](https://github.com/khatastroffik/treefolder/commit/9166c9c76cb40a84ff1dfb6c042c269e2132c7f8))
+
+
+### Build System / Dependencies
+
+* exclude automatically generated CHANGELOG from linting ([99ebd22](https://github.com/khatastroffik/treefolder/commit/99ebd22ae92e59f0828363fa23d47391ad15d0b6))
+
 ## [1.2.1](https://github.com/khatastroffik/treefolder/compare/v1.2.0...v1.2.1) (2026-02-04)
 
 
