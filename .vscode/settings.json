@@ -47,5 +47,14 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "markdownlint.lintWorkspaceGlobs": [
+    "!**/CHANGELOG.md",
+    "**/*.{md,mkd,mdwn,mdown,markdown,markdn,mdtxt,mdtext,workbook}",
+    "!**/*.code-search",
+    "!**/bower_components",
+    "!**/node_modules",
+    "!**/.git",
+    "!**/vendor"
   ]
 }

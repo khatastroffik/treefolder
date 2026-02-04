@@ -10,4 +10,5 @@ export default antfu({
   rules: {
     "ts/no-redeclare": "off", // "@typescript-eslint/no-redeclare": "off",
   },
+  ignores: ["CHANGELOG.md"], // CHANGELOG.md is a "generated" file
 });
