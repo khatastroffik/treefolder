@@ -66,7 +66,7 @@
     "tsx": "tsx",
     "release": "pnpx commit-and-tag-version",
     "release:test": "pnpx commit-and-tag-version --dry-run",
-    "pub": "pnpm pushtags && pnpm publish",
+    "pub": "pnpm build2prod && pnpm pushtags && pnpm publish",
     "pub:test": "pnpm publish --dry-run --force --no-git-checks"
   },
   "devDependencies": {
