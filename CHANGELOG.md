@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.1](https://github.com/khatastroffik/treefolder/compare/v1.3.0...v1.3.1) (2026-02-04)
+
+
+### Build System / Dependencies
+
+* ensure build is always executed prior publishing a new version ([2c82ffa](https://github.com/khatastroffik/treefolder/commit/2c82ffa7bd929a3113f4a6e6eb2f7064cd1d5d07))
+
 ## [1.3.0](https://github.com/khatastroffik/treefolder/compare/v1.2.1...v1.3.0) (2026-02-04)
 
 
