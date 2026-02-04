@@ -42,6 +42,7 @@ This is the recommanded and easiest approach.
 1. [Styled output](#styled-output)
 1. [Version information](#version-information)
 1. [Verbose output](#verbose-output)
+1. [Debug Output](#debug-output)
 
 ### Auto "root folder"
 
@@ -89,6 +90,10 @@ Use the command line argument `--version` or `-v` to display the version informa
 ### Verbose output
 
 When the flag i.e. command line argument `--verbose` is defined/set, then a few more information will be displayed together with the tree representation.
+
+### Debug output
+
+Use the flag `--debug` (short `-d`) to display additional information about the used tool configuration.
 
 ## Development
 

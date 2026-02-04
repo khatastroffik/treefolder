@@ -69,16 +69,26 @@ ${update ?? k11k}`));
   }
 }
 
+export async function showDebug() {
+  if (config.debug) {
+    console.info(colorText(`${"+".repeat(26)} DEBUG ${"+".repeat(27)}`));
+    console.info(colorText("Command line arguments:"));
+    console.info(globals.commandLineArgs);
+    console.info(colorText("Treefolder configuration:"));
+    console.info(config);
+    console.info(colorText("FolderCount:"), colorText(globals.folderCount));
+    console.info(colorText("FileCount:"), colorText(globals.fileCount));
+    console.info(colorText("IgnoredCount:"), colorText(globals.ignoredCount));
+    console.info(colorText("+".repeat(60)));
+  }
+}
+
 /**
  * Output additional information on the current run
  */
 export async function showStats() {
   if (config.verbose) {
-    console.info(colorText("\nCommand line arguments:"));
-    console.info(globals.commandLineArgs);
-    console.info(colorText("\nTreefolder configuration:"));
-    console.info(config, "\n");
-    console.info(colorText(`Scanned ${colorText(globals.folderCount)} folders and ${colorText(globals.fileCount)} files.`));
+    console.info(colorText(`\nScanned ${colorText(globals.folderCount)} folders and ${colorText(globals.fileCount)} files.`));
     console.info(colorText(`Filtered out ${colorText(globals.ignoredCount)} items (folders or files).`));
   }
 }
@@ -90,6 +100,7 @@ const options = {
   unsorted: { type: "boolean", default: false, short: "u" },
   version: { type: "boolean", default: false, short: "v" },
   list: { type: "boolean", default: false, short: "l" },
+  debug: { type: "boolean", default: false, short: "d" },
 } as const;
 
 /**

@@ -20,7 +20,7 @@ export const symbolStyles = {
   colored: { closed: "📁 ", open: "📂 ", file: "📄" },
 };
 
-/** Default configuration of the *treefolder* tool */
+/** Default configuration */
 export const config = {
   style: Style.none,
   symbols: symbolStyles.none,
@@ -30,6 +30,7 @@ export const config = {
   unsorted: false,
   formatAsList: false,
   version: false,
+  debug: false,
 };
 
 /**
@@ -41,9 +42,10 @@ export async function configure(): Promise<void> {
   config.formatAsList = values.list;
   config.style = Style[values.style as keyof typeof Style] ?? config.style;
   config.symbols = symbolStyles[config.style];
-  config.root = path.resolve((positionals.length > 0) ? positionals[0]! : config.root);
+  config.root = path.resolve(positionals[0] ?? config.root);
   config.ignores = config.ignores.map(item => path.join(config.root, item));
-  config.unsorted = Boolean(values.unsorted);
-  config.verbose = Boolean(values.verbose);
+  config.unsorted = values.unsorted;
+  config.verbose = values.verbose;
+  config.debug = values.debug;
   globals.commandLineArgs = { ...values, root: positionals[0] ?? "n/a" };
 }
