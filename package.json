@@ -64,8 +64,8 @@
     "pushtags": "git push --follow-tags origin main",
     "try-commit": "git hook run pre-commit",
     "tsx": "tsx",
-    "release": "pnpm dlx commit-and-tag-version",
-    "release:test": "pnpm dlx commit-and-tag-version --dry-run",
+    "release": "pnpx commit-and-tag-version",
+    "release:test": "pnpx commit-and-tag-version --dry-run",
     "pub": "pnpm pushtags && pnpm publish",
     "pub:test": "pnpm publish --dry-run --force --no-git-checks"
   },
@@ -95,6 +95,41 @@
   },
   "commit-and-tag-version": {
     "types": [
+      {
+        "type": "feat",
+        "section": "Features",
+        "hidden": false
+      },
+      {
+        "type": "chore",
+        "section": "Chore",
+        "hidden": false
+      },
+      {
+        "type": "ci",
+        "section": "CI/CD",
+        "hidden": false
+      },
+      {
+        "type": "improve",
+        "section": "Improvements / Addendum",
+        "hidden": false
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes / Corrigendum",
+        "hidden": false
+      },
+      {
+        "type": "perf",
+        "section": "Performance / Optimization",
+        "hidden": false
+      },
+      {
+        "type": "test",
+        "section": "Code Quality",
+        "hidden": false
+      },
       {
         "type": "refactor",
         "section": "Refactors",
