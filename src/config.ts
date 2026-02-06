@@ -31,6 +31,7 @@ export const config = {
   formatAsList: false,
   version: false,
   debug: false,
+  help: false,
 };
 
 /**
@@ -47,5 +48,6 @@ export async function configure(): Promise<void> {
   config.unsorted = values.unsorted;
   config.verbose = values.verbose;
   config.debug = values.debug;
+  config.help = values.help;
   globals.commandLineArgs = { ...values, root: positionals[0] ?? "n/a" };
 }

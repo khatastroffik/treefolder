@@ -41,8 +41,12 @@ This is the recommanded and easiest approach.
 1. [List output](#list-output)
 1. [Styled output](#styled-output)
 1. [Version information](#version-information)
+1. [Extended help / man page](#extended-halp--man-page)
 1. [Verbose output](#verbose-output)
 1. [Debug Output](#debug-output)
+1. Limit scanning / output size (todo)
+1. Set default options/flags per env variables (todo)
+1. Auto update (in evaluation)
 
 ### Auto "root folder"
 
@@ -63,7 +67,7 @@ Notes:
 
 By default, the list or the leaves of the treeview are sorted following the _"folders first" principle_: All the folders are listed first, then all the files. All items are alphabetically sorted. This apply at any depth within the tree structure.
 
-This behavior can be _disabled_ using the command line argument `--unsorted`. In this case, all items are sorted the way the operating system does by default e.g. sorted by their names, regardless of their type (directory or file).
+This behavior can be _disabled_ using the command line argument `--unsorted` or `-u`. In this case, all items are sorted the way the operating system does by default e.g. sorted by their names, regardless of their type (directory or file).
 
 ### List output
 
@@ -85,11 +89,15 @@ Notes:
 
 ### Version information
 
-Use the command line argument `--version` or `-v` to display the version information about the tool.
+Use the command line argument `--version` or `-v` to display the version information about the tool and eventually inform about the _availability of an updated version_ of treefolder.
+
+### Extended halp / man page
+
+Use the command line argument `--help` or `-h` to display detailled instructions and hints about using treefolder in a suitable way.
 
 ### Verbose output
 
-When the flag i.e. command line argument `--verbose` is defined/set, then a few more information will be displayed together with the tree representation.
+When the flag i.e. command line argument `--verbose` or `-b` is defined/set, then a few more information will be displayed together with the tree representation.
 
 ### Debug output
 
