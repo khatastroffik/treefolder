@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.4.0](https://github.com/khatastroffik/treefolder/compare/v1.3.1...v1.4.0) (2026-02-06)
+
+
+### Features
+
+* add "-h, --help" flag to display extended help instructions ([aa15252](https://github.com/khatastroffik/treefolder/commit/aa15252c01b7d176ebaa20c62ced7702b17af0f5))
+
 ## [1.3.1](https://github.com/khatastroffik/treefolder/compare/v1.3.0...v1.3.1) (2026-02-04)
 
 
