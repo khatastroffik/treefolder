@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.5.0](https://github.com/khatastroffik/treefolder/compare/v1.4.0...v1.5.0) (2026-02-06)
+
+
+### Features
+
+* add "-c, --clear" flag to clear the command line screen prior displaying the result ([b539323](https://github.com/khatastroffik/treefolder/commit/b53932395dcd49515fa6265c3a8981371769952a))
+* add "-m, --max-items" option to limit the amount of processible items ([83123cb](https://github.com/khatastroffik/treefolder/commit/83123cb4eca90c6791642862ce093bd515e0f162))
+
+
+### Bug Fixes / Corrigendum
+
+* folder count shows the count augmented by one ([5cdaf1b](https://github.com/khatastroffik/treefolder/commit/5cdaf1b32bf19d35b3cc6deda11bf7285b853571))
+
 ## [1.4.0](https://github.com/khatastroffik/treefolder/compare/v1.3.1...v1.4.0) (2026-02-06)
 
 
