@@ -33,6 +33,7 @@ export const config = {
   debug: false,
   help: false,
   maxItems: globals.maxItems,
+  clear: false,
 };
 
 /**
@@ -51,6 +52,7 @@ export async function configure(): Promise<void> {
   config.debug = values.debug;
   config.help = values.help;
   config.maxItems = values["max-items"] ? validateMaxItemsArgument(values["max-items"]) : globals.maxItems;
+  config.clear = values.clear;
   globals.maxItems = config.maxItems;
   globals.commandLineArgs = { ...values, root: positionals[0] ?? "n/a" };
 }

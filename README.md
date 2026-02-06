@@ -45,6 +45,7 @@ This is the recommanded and easiest approach.
 1. [Verbose output](#verbose-output)
 1. [Debug Output](#debug-output)
 1. [Limit the maximum amount of processed items / limit the output size](#limit-the-amount-of-processed-items)
+1. [Clear screen (command line stdout) forehand](#clear-the-command-line-screen-before-displaying-the-result)
 1. Set default options/flags per env variables (todo)
 1. Auto update (in evaluation)
 
@@ -91,9 +92,13 @@ Notes:
 
 Use the command line argument `--version` or `-v` to display the version information about the tool and eventually inform about the _availability of an updated version_ of treefolder.
 
+Note: this flag is having the second highest priority - after the _help_ flag: if set, it will dismiss all other options/flag (but the _clear_ and _help_ flag).
+
 ### Extended halp / man page
 
 Use the command line argument `--help` or `-h` to display detailled instructions and hints about using treefolder in a suitable way.
+
+Note: this flag is having the highest priority: if set, it will dismiss all other options/flag (but the _clear_ flag, which may always be triggered).
 
 ### Verbose output
 
@@ -113,6 +118,10 @@ If you'd like or await to proceed with more than this limit, then you may rise i
 The _max-items_ value must be a _valid number_ and must not be below `1` or above `32768`.
 
 _Treefolder_ will exit with an **error** if the (default or manually defined) limit is reached or if the _max-items_ command line argument is not valid.
+
+### Clear the command line screen before displaying the result
+
+Use the flag `--clear` or `-c` to cleanup the command line (_stdout_) screen before displaying the result.
 
 ## Development
 

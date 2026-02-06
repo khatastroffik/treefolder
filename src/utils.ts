@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import type { ParseArgsConfig, ParseArgsOptionDescriptor } from "node:util";
-import { exit } from "node:process";
+import { exit, stdout } from "node:process";
 import { parseArgs, styleText } from "node:util";
 import { version as packageVersion } from "../package.json";
 import { config } from "./config";
@@ -18,6 +18,7 @@ const options = {
   "debug": { type: "boolean", default: false, short: "d", description: "Display some hints about the configuration used to generate the resulting output." },
   "help": { type: "boolean", default: false, short: "h", description: "Display THIS help information about the usage of treefolder." },
   "max-items": { type: "string", default: "", short: "m", description: "Define the maximum numbers of processable items (folders + files). If this limit is reached, the tool will exit with an error and won't display any result.\n-> Min value: 1\n-> Max value: 32768" },
+  "clear": { type: "boolean", default: false, short: "c", description: "Clear the (stdout) screen prior displaying the result." },
 } as const;
 
 /**
@@ -209,6 +210,16 @@ export async function showHelp() {
 
     console.info([toolDesc, helpHeader, example, optionsText, notes].join(`\n`));
     exit(0);
+  }
+}
+
+/**
+ * Clear the output screen (stdout).
+ */
+export function clearScreen() {
+  if (config.clear) {
+    // console.clear(); // BUGGY - NOT WORKING PROPERLY!
+    stdout.write("\x1Bc");
   }
 }
 
