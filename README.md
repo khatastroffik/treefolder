@@ -44,7 +44,7 @@ This is the recommanded and easiest approach.
 1. [Extended help / man page](#extended-halp--man-page)
 1. [Verbose output](#verbose-output)
 1. [Debug Output](#debug-output)
-1. Limit scanning / output size (todo)
+1. [Limit the maximum amount of processed items / limit the output size](#limit-the-amount-of-processed-items)
 1. Set default options/flags per env variables (todo)
 1. Auto update (in evaluation)
 
@@ -71,7 +71,7 @@ This behavior can be _disabled_ using the command line argument `--unsorted` or 
 
 ### List output
 
-When the command line argument `--list` (short: `-l`) is used, all the folders and files will be displayed as a flat list instead of as a treeview.
+When the command line argument `--list` or `-l` is used, all the folders and files will be displayed as a flat list instead of as a treeview.
 
 Note: the command line arguments `--unsorted` and `--style colored` may also be applied to refine i.e. adapt the list output. See the [List output examples](docs/readme.md#list-output-examples)
 
@@ -101,7 +101,18 @@ When the flag i.e. command line argument `--verbose` or `-b` is defined/set, the
 
 ### Debug output
 
-Use the flag `--debug` (short `-d`) to display additional information about the used tool configuration.
+Use the flag `--debug` or `-d` to display additional information about the used tool configuration.
+
+### Limit the amount of processed items
+
+In order to avoid very long processing time and memory consumption/wastage, _treefolder_ defines a default amount of items (folders + files), that may be processed i.e. displayed at once.
+
+The _default_ limit is: **`500` items**.
+
+If you'd like or await to proceed with more than this limit, then you may rise it using the `--max-items` or `-m` command line argument.
+The _max-items_ value must be a _valid number_ and must not be below `1` or above `32768`.
+
+_Treefolder_ will exit with an **error** if the (default or manually defined) limit is reached or if the _max-items_ command line argument is not valid.
 
 ## Development
 

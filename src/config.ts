@@ -1,6 +1,6 @@
 import path from "node:path";
 import globals from "./globals";
-import { getArguments } from "./utils";
+import { getArguments, validateMaxItemsArgument } from "./utils";
 
 /** make spaces *visible* in template strings */
 export const space = " ";
@@ -32,6 +32,7 @@ export const config = {
   version: false,
   debug: false,
   help: false,
+  maxItems: globals.maxItems,
 };
 
 /**
@@ -49,5 +50,7 @@ export async function configure(): Promise<void> {
   config.verbose = values.verbose;
   config.debug = values.debug;
   config.help = values.help;
+  config.maxItems = values["max-items"] ? validateMaxItemsArgument(values["max-items"]) : globals.maxItems;
+  globals.maxItems = config.maxItems;
   globals.commandLineArgs = { ...values, root: positionals[0] ?? "n/a" };
 }

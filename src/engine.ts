@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 import fs from "node:fs";
 import path from "node:path";
-
 import util, { styleText } from "node:util";
-
 import { config, space, Style } from "./config";
 import globals from "./globals";
+import { validateMaxItemsCount } from "./utils";
 
 const readdirPromise = util.promisify(fs.readdir);
 
@@ -130,15 +129,18 @@ async function generateOutput(folderName: any, indent: string, isHead: boolean, 
       result += await generateOutput(path.join(folderName, contentItem.name), indent + contentItemPrefix, false, index === tailIndex);
     };
     if (contentItem.isFile()) {
-      globals.fileCount++;
+      globals.incFileCount();
+      validateMaxItemsCount();
       const entityPrefix = index === tailIndex ? `└─${config.symbols.file}${space}` : `├─${config.symbols.file}${space}`;
       result += formatFile({ indent, contentItemPrefix, entityPrefix, contentItem });
     }
   };
-  globals.folderCount++;
+  globals.incFolderCount();
+  validateMaxItemsCount();
   return result;
 }
 
+/**
 /**
  * Generate the Treeview/List and output the result to the console
  */

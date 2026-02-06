@@ -10,13 +10,14 @@ import globals from "./globals";
  * Options configuration of type {@link ParseArgsConfig} for `util.parseArgs(...)`
  */
 const options = {
-  style: { type: "string", default: "none", short: "s", description: "The style value can be set to 'none', 'colored', 'black' or 'wireframe' (without the quotes) e.g. \"-style colored\". The default style is 'none' and may be ommited." },
-  verbose: { type: "boolean", default: false, short: "b", description: "Display extended information about the result after the standard output." },
-  unsorted: { type: "boolean", default: false, short: "u", description: "Do not enforce sorting folders first i.e. on top of the result. Instead, rely on the OS i.e. command line environment native sorting algorythm." },
-  version: { type: "boolean", default: false, short: "v", description: "Display version information about the tool and eventually inform about the availability of an updated version." },
-  list: { type: "boolean", default: false, short: "l", description: "Display the result as a simple list (with full path) instead of as a treeview." },
-  debug: { type: "boolean", default: false, short: "d", description: "Display some hints about the configuration used to generate the resulting output." },
-  help: { type: "boolean", default: false, short: "h", description: "Display THIS help information about the usage of treefolder." },
+  "style": { type: "string", default: "none", short: "s", description: "The style value can be set to 'none', 'colored', 'black' or 'wireframe' (without the quotes) e.g. \"-style colored\". The default style is 'none' and may be ommited." },
+  "verbose": { type: "boolean", default: false, short: "b", description: "Display extended information about the result after the standard output." },
+  "unsorted": { type: "boolean", default: false, short: "u", description: "Do not enforce sorting folders first i.e. on top of the result. Instead, rely on the OS i.e. command line environment native sorting algorythm." },
+  "version": { type: "boolean", default: false, short: "v", description: "Display version information about the tool and eventually inform about the availability of an updated version." },
+  "list": { type: "boolean", default: false, short: "l", description: "Display the result as a simple list (with full path) instead of as a treeview." },
+  "debug": { type: "boolean", default: false, short: "d", description: "Display some hints about the configuration used to generate the resulting output." },
+  "help": { type: "boolean", default: false, short: "h", description: "Display THIS help information about the usage of treefolder." },
+  "max-items": { type: "string", default: "", short: "m", description: "Define the maximum numbers of processable items (folders + files). If this limit is reached, the tool will exit with an error and won't display any result.\n-> Min value: 1\n-> Max value: 32768" },
 } as const;
 
 /**
@@ -43,6 +44,15 @@ function blue(text: string | number): string {
 }
 
 /**
+ * Utility function to color a text in red for console output
+ * @param text input string
+ * @returns a text colored in red
+ */
+function red(text: string | number): string {
+  return styleText("redBright", `${text}`);
+}
+
+/**
  * Retrieve the version label of the latest package version on npmjs.com
  * @returns the string corresponding to the latest version
  */
@@ -60,7 +70,7 @@ async function getLatestVersionFronPackageRepository(): Promise<string> {
  * @returns wrapped and padded text
  */
 function wrap(text: string) {
-  return text.replace(new RegExp(`(?![^\\n]{1,${globals.maxWidth}}$)([^\\n]{1,${globals.maxWidth}})\\s`, "g"), `${globals.pad}$1\n`);
+  return text.replace(new RegExp(`(?![^\\n]{1,${globals.maxOutputWidth}}$)([^\\n]{1,${globals.maxOutputWidth}})\\s`, "g"), `${globals.pad}$1\n`);
 }
 
 /**
@@ -119,6 +129,39 @@ ${update ?? k11k}`));
 }
 
 /**
+ * Validates the amount of processed items. This function exits the tool if the limit is reached.
+ */
+export function validateMaxItemsCount() {
+  if (globals.maxItemsCountReached()) {
+    console.error(red("[LIMIT REACHED] The maximum number of processible items has been reached:\n"));
+    showItemsCountDebug();
+    console.error(red(`Please define a higher limit using the ${yellow("'--max-items'")} command line argument if you want to output more items in the result.`));
+    exit (1);
+  }
+}
+
+export function validateMaxItemsArgument(maxItems: string): number {
+  const argValue = Number.parseInt(maxItems, 10);
+  if (Number.isNaN(argValue) || argValue < 1 || argValue > 32768) {
+    console.info(red(`[BAD LIMIT] The value of the ${yellow("'--maxItems'")} command line argument must be a valid number and must not be below ${yellow("1")} or above ${yellow("32768")}. The current argument value is ${yellow(maxItems)}.\n`));
+    exit(1);
+  }
+  return argValue;
+}
+
+export async function showItemsCountDebug() {
+  console.info(blue("Processed items (so far):"));
+  const processed = {
+    folderCount: globals.folderCount,
+    fileCount: globals.fileCount,
+    totalItemsCount: globals.totalItemsCount,
+    maxItems: globals.maxItems,
+    ignoredCount: globals.ignoredCount,
+  };
+  console.info(processed);
+}
+
+/**
  * Output additional information about the used configuration and the result.
  */
 export async function showDebug() {
@@ -127,9 +170,7 @@ export async function showDebug() {
     console.info(globals.commandLineArgs);
     console.info(blue("Treefolder configuration:"));
     console.info(config);
-    console.info(blue("FolderCount  :"), yellow(globals.folderCount.toString()));
-    console.info(blue("FileCount    :"), yellow(globals.fileCount.toString()));
-    console.info(blue("IgnoredCount :"), yellow(globals.ignoredCount));
+    showItemsCountDebug();
   }
 }
 
